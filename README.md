@@ -15,15 +15,20 @@ You are free to think creatively and come up with additional requirements or mod
 
 THIS IS A GROUP PROJECT CONSISTING OF A TEAM OF 5 PEOPLE INCLUDING ME.
 NAMES OF OTHER MEMBERS ARE AS FOLLOWS.
+
 1.Chandana Nisankara
+
 2.Dhanya K
+
 3.Patil Dhairyasheel
+
 4.Varun Sunderarajan
 
 IITM IS THE PROPRIETER OF THIS GROUP PROJECT AND HOLD THE RIGHTS FOR THE DATA AND THIS IS REPO IS JUST FOR REFERENCE PURPOSE.
 
 
 Technologies and Tools Used: Overall Development Process
+
 ● Git and Github: As asked in the problem statement, git was used as the very basis for the entire
 project. Github repositories were used right from the very beginning, and milestone submissions were
 made therein. The steps involved in git usage became second-nature to us by the end of the project.
