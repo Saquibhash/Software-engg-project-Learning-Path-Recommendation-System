@@ -1,0 +1,430 @@
+openapi: 3.0.0
+info:
+  title: Student Learning Management System
+  version: "1.0"
+servers:
+  - url: https://example.com/api/v1
+paths:
+  /login:
+    post:
+      summary: "Login to account"
+      tags: 
+        - "Login"
+      operationId: loginStudent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: "Successful login"
+
+        '401':
+          description: "Incorrect login"
+          content: 
+            application/json:
+              examples:
+                Sample 401 response:
+                  value: "Incorrect login"
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+
+          
+  /profile:
+    get:
+      summary: "Get student profile"
+      tags: 
+        - "Students"
+      operationId: getStudentProfile
+      responses:
+        '200':
+          description: "Profile data returned"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+                Sample 200 response:
+                  value: {  "profile_id" : 1,
+                      "student_id" : 12,
+                      "learning_path": 11,
+                      "latest_courses" : [1027, 2011, 72],
+                      "experience" : "worked as a software engineer for 2 years",
+                      }
+                
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+        
+  /notifications:
+    get:
+      summary: "Get notifications"
+      tags: 
+        - "Students"
+      operationId: getStudentNotifications
+      responses:
+        '200':
+          description: "List of notifications"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+        
+  /recommendations:
+    get:
+      summary: "Get course recommendations"
+      tags: 
+        - "Students"
+      operationId: getCourseRecommendations
+      responses:
+        '200':
+          description: "Course recommendations"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+  /preferences:
+    put:
+      summary: "Update student preferences"
+      tags: 
+        - "Students"
+      operationId: updateStudentPreferences
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preferences'
+      responses:
+        '200':
+          description: "Preferences updated"
+          
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              examples:
+                sample 400 response:
+                  value: "Error in input data"
+              
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+
+  /feedback/{courseId}:
+    post:
+      summary: "Submit course feedback"
+      tags: 
+        - "Students"
+      operationId: submitCourseFeedback
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rating:
+                  type: integer
+                  format: int32
+                comment:
+                  type: string
+      responses:
+        '200':
+          description: "Feedback submitted"
+
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              examples:
+                sample 400 response:
+                  value: "Error in input data"
+              
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+              
+        '404':
+          description: "Not found"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Course not found!"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+                  
+  /data/anonymize:
+    post:
+      summary: "Anonymize student data"
+      tags: 
+        - "Students"
+      operationId: anonymizeStudentData
+      responses:
+        '200':
+          description: "Data anonymized"
+              
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+              
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+
+
+  /enrollments/upload:
+    post:
+      summary: "Upload enrollment data"
+      tags: 
+        - "Admin"
+      operationId: uploadEnrollmentData
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: "Enrollments uploaded"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              examples:
+                sample 400 response:
+                  value: "Error in input data"
+              
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+  /analytics:
+    get:
+      summary: "Get analytics data"
+      tags: 
+        - "Admin"
+        - "DataAnalyst"
+      operationId: getAnalyticsData
+      responses:
+        '200':
+          description: "Analytics data"
+          content:
+            application/json:
+              schema:
+                type: object
+              
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+  /errors:
+    get:
+      summary: "Get system errors"
+      tags: 
+        - "ITSupport"
+      operationId: getErrors
+      responses:
+        '200':
+          description: "List of errors"
+              
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+  /feedback/negative:
+    get:
+      summary: "Get negative feedback"
+      tags: 
+        - "AcademicAdvisor"
+      operationId: getNegativeFeedback
+      responses:
+        '200':
+          description: "Negative feedback"
+              
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              examples:
+                sample 401 response:
+                  value: "Invalid credentials"
+                  
+        '500':
+          description: "Internal Server Error"
+          content: 
+            application/json:
+              examples:
+                Sample 500 response:
+                  value: "Internal Server Error"
+
+components:
+  schemas:
+    Profile:
+      type: object
+      properties:
+        profile_id:
+          type: integer
+        student_id:
+          type: integer
+        learning_path:
+          type: string
+        latest_courses:
+          type: string
+        experience:
+          type: string
+          
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        body:
+          type: string
+        date:
+          type: string
+    Course:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+    Preferences:
+      type: object
+      properties:
+        domains:
+          type: array
+          items:
+            type: string
+        availability:
+          type: integer
